@@ -10,5 +10,6 @@ import com.rariramz.calculator.calculations.Calculator
 * */
 interface Connector {
     fun getCalculator() : Calculator
+    fun getVibrator() : Vibrator
     fun isDemo() : Boolean
 }

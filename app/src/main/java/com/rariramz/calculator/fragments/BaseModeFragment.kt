@@ -38,6 +38,7 @@ class BaseModeFragment : Fragment() {
     private lateinit var btn_parenthesis_r: Button
 
     private lateinit var calculator : Calculator
+    private lateinit var vibrator : Vibrator
     private var isDemo : Boolean = false
 
     override fun onCreateView(
@@ -123,8 +124,11 @@ class BaseModeFragment : Fragment() {
         }
         btn_plus = view.findViewById(R.id.btn_plus)
         btn_plus.setOnClickListener {
-            if (isDemo)
-                Toast.makeText(getContext(), "Sorry, you need to buy full version :(", Toast.LENGTH_SHORT).show()
+            if (isDemo) {
+                vibrator.vibrate(100)
+                Toast.makeText(getContext(), "Sorry, you need to buy full version :(",
+                    Toast.LENGTH_SHORT).show()
+            }
             else
                 calculator.appendOperation(Operations.ADD)
         }
@@ -142,6 +146,7 @@ class BaseModeFragment : Fragment() {
         }
 
         this.calculator = activ!!.getCalculator()
+        this.vibrator = activ!!.getVibrator()
         this.isDemo = activ!!.isDemo()
     }
 

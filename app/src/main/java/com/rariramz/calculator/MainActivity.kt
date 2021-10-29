@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(), Connector {
     private lateinit var inputText : TextView
     private lateinit var resultText : TextView
     private lateinit var btn_2nd: Button
+    private lateinit var vibrator : Vibrator
 
     private fun changeMode() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), Connector {
         if (isDemo())
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         inputText = findViewById(R.id.textViewInput)
         resultText = findViewById(R.id.textViewResult)
         calculator.setListeners(inputText, resultText)
@@ -48,10 +50,14 @@ class MainActivity : AppCompatActivity(), Connector {
         //2nd mode (scientific)
         btn_2nd = findViewById(R.id.btn_2nd)
         btn_2nd.setOnClickListener{
-            if (!isDemo())
+            if (!isDemo()) {
                 changeMode()
-            else
-                Toast.makeText(this, "Sorry, you need to buy full version :(",Toast.LENGTH_SHORT).show()
+            }
+            else {
+                vibrator.vibrate(100)
+                Toast.makeText(this, "Sorry, you need to buy full version :(",Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
         btn_2nd.bringToFront()
 
@@ -60,6 +66,10 @@ class MainActivity : AppCompatActivity(), Connector {
 
     override fun getCalculator(): Calculator { //Interface function
         return calculator
+    }
+
+    override fun getVibrator(): Vibrator {
+        return vibrator
     }
 
     override fun isDemo() : Boolean{
